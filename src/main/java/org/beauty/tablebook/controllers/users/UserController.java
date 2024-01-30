@@ -3,10 +3,12 @@ package org.beauty.tablebook.controllers.users;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.beauty.tablebook.models.restaurants.RestaurantDTO;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.users.UserDTO;
+import org.beauty.tablebook.models.users.UserService;
 import org.beauty.tablebook.models.users.Users;
 import org.beauty.tablebook.models.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +22,18 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 @Tag(name = "Работа с пользователями", description = "Управление пользователями системы")
+@AllArgsConstructor
 public class UserController {
 
-    private final UsersRepository usersRepository;
+    private final UserService userService;
 
-    public UserController(@Autowired UsersRepository usersRepository) {
 
-        this.usersRepository = usersRepository;
-    }
 
     @GetMapping()
     @Operation(summary = "Список пользователей",
             description = "Получить список всех пользователей")
-    public ResponseEntity<List<Users>> getUsers(){
-        return ResponseEntity.ok(usersRepository.findAll());
+    public ResponseEntity<List<UserDTO>> getUsers(){
+        return ResponseEntity.ok(userService.findAllUsersDTO());
     }
 
     @PostMapping()
@@ -41,11 +41,10 @@ public class UserController {
     public ResponseEntity<HttpStatus> postNewUser(@RequestBody()
              UserDTO userDTO){
 
-        Users user = new Users();
-        user = userDTO.fromDTOtoEntity();
-        usersRepository.save(user);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        userService.save(userDTO);
+
+        return ResponseEntity.ok(HttpStatus.CREATED);
 
     }
 
