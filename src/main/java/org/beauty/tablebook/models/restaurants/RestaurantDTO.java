@@ -38,7 +38,7 @@ public class RestaurantDTO {
 
         return new RestaurantDTOBuilder()
                 .address(restaurant.getAddress())
-                .ownerID(getOwnerID())
+                .ownerID(restaurant.getOwner().getUserID())
                 .name(restaurant.getName())
                 .city(restaurant.getCity())
                 .build();

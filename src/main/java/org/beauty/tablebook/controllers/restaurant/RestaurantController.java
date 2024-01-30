@@ -3,7 +3,9 @@ package org.beauty.tablebook.controllers.restaurant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import org.beauty.tablebook.models.restaurants.RestaurantDTO;
+import org.beauty.tablebook.models.restaurants.RestaurantService;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.restaurants.RestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/restaurants")
+@AllArgsConstructor
 @Tag(name = "Работа с ресторанами", description = "Управление ресторанами системы")
 public class RestaurantController {
 
     @Autowired
     private final RestaurantsRepository restaurantsRepository;
 
-    public RestaurantController(RestaurantsRepository restaurantsRepository) {
-        this.restaurantsRepository = restaurantsRepository;
-    }
+    @Autowired
+    private final RestaurantService restaurantService;
+
 
     @GetMapping()
     @Operation(summary = "Список всех ресторанов",
@@ -60,10 +63,8 @@ public class RestaurantController {
         if (restaurantsRepository.existsById(ID)){
         Restaurants restaurant = restaurantsRepository.findById(ID).get();
 
-        RestaurantDTO restaurantDTO = new RestaurantDTO();
-            ResponseEntity<RestaurantDTO> ok = ResponseEntity.ok(new RestaurantDTO()
+        return ResponseEntity.ok(new RestaurantDTO()
                     .fromEntityToDto(restaurant));
-            return ok;
         } else return ResponseEntity.badRequest().body(null);
 
     }
@@ -73,9 +74,7 @@ public class RestaurantController {
     public ResponseEntity<HttpStatus> postRestaurant(@RequestBody()
                                                      RestaurantDTO restaurantDTO){
 
-        Restaurants restaurant = restaurantDTO.fromDTOtoEntity();
-
-        restaurantsRepository.save(restaurant);
+        restaurantService.saveRestaurant(restaurantDTO);
 
         return ResponseEntity.ok(HttpStatus.CREATED);
 
