@@ -1,5 +1,6 @@
 package org.beauty.tablebook.models.restaurants;
 
+import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
 import org.beauty.tablebook.models.users.Users;
 import org.beauty.tablebook.models.users.UsersRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class RestaurantService {
             restaurant.setOwner(owner);
             restaurantRepository.save(restaurant);
         } else {
-            throw new RuntimeException("User not found with ID: " + restaurantDTO.getOwnerID());
+            throw new UserWithIDNotFoundException(restaurantDTO.getOwnerID());
         }
     }
 }

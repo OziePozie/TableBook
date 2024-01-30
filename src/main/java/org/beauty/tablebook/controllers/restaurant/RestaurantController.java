@@ -4,12 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
 import org.beauty.tablebook.models.restaurants.RestaurantDTO;
 import org.beauty.tablebook.models.restaurants.RestaurantService;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.restaurants.RestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +57,7 @@ public class RestaurantController {
     }
 
     @GetMapping(value = "{id}")
-    @Operation()
+    @Operation(summary = "Получить ресторан по ID")
     public ResponseEntity<RestaurantDTO> getOneRestaurantByID(@PathVariable(value = "id")
                                                                 @Parameter(description = "Идентификатор ресторана")
                                                                 Long ID){
@@ -65,16 +67,28 @@ public class RestaurantController {
 
         return ResponseEntity.ok(new RestaurantDTO()
                     .fromEntityToDto(restaurant));
-        } else return ResponseEntity.badRequest().body(null);
+        } else
+            return ResponseEntity
+                .badRequest()
+                .body(null);
 
     }
 
     @PostMapping
     @Operation(summary = "Добавить новый ресторан")
-    public ResponseEntity<HttpStatus> postRestaurant(@RequestBody()
+    public ResponseEntity<HttpStatus> postRestaurant(@RequestBody
                                                      RestaurantDTO restaurantDTO){
 
-        restaurantService.saveRestaurant(restaurantDTO);
+        try {
+
+            restaurantService.saveRestaurant(restaurantDTO);
+
+        } catch (UserWithIDNotFoundException e){
+            
+            return ResponseEntity
+                    .of(ProblemDetail.forStatus(HttpStatus.BAD_REQUEST))
+                    .build();
+        }
 
         return ResponseEntity.ok(HttpStatus.CREATED);
 

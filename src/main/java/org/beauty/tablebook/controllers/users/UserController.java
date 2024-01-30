@@ -37,7 +37,8 @@ public class UserController {
     }
 
     @PostMapping()
-    @Operation
+    @Operation(summary = "Создание нового пользователя",
+            description = "Создать нового пользователя")
     public ResponseEntity<HttpStatus> postNewUser(@RequestBody()
              UserDTO userDTO){
 
