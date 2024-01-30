@@ -1,7 +1,10 @@
 package org.beauty.tablebook.models.users;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 
 
@@ -14,11 +17,14 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "users")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Users {
-
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
     @Column(name = "first_name")
     private String userFirstName;

@@ -2,13 +2,18 @@ package org.beauty.tablebook.controllers.users;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.apache.catalina.User;
+import org.beauty.tablebook.models.restaurants.RestaurantDTO;
+import org.beauty.tablebook.models.restaurants.Restaurants;
+import org.beauty.tablebook.models.users.UserDTO;
 import org.beauty.tablebook.models.users.Users;
 import org.beauty.tablebook.models.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +36,17 @@ public class UserController {
         return ResponseEntity.ok(usersRepository.findAll());
     }
 
+    @PostMapping()
+    @Operation
+    public ResponseEntity<HttpStatus> postNewUser(@RequestBody()
+             UserDTO userDTO){
 
+        Users user = new Users();
+        user = userDTO.fromDTOtoEntity();
+        usersRepository.save(user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+
+    }
 
 }
