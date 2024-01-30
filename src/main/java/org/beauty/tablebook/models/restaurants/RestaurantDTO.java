@@ -1,6 +1,7 @@
 package org.beauty.tablebook.models.restaurants;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,13 @@ import org.beauty.tablebook.models.users.Users;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestaurantDTO {
-
+    @NotBlank
     private String name;
+    @NotBlank
     private String city;
+    @NotBlank
     private String address;
+    @NotBlank
     private Long ownerID;
 
     public Restaurants fromDTOtoEntity(){
