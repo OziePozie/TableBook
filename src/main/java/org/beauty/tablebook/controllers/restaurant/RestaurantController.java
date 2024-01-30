@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,8 +31,24 @@ public class RestaurantController {
     @GetMapping()
     @Operation(summary = "Список всех ресторанов",
             description = "Получить список всех ресторанов")
-    public ResponseEntity<List<Restaurants>> getRestaurants(){
-        return ResponseEntity.ok(restaurantsRepository.findAll());
+    public ResponseEntity<List<RestaurantDTO>> getRestaurants(){
+
+        List<Restaurants> restaurants = restaurantsRepository.findAll();
+
+        List<RestaurantDTO> restaurantDTOList = new ArrayList<>(restaurants.size());
+
+        for (Restaurants restaurant: restaurants){
+
+            RestaurantDTO restaurantDTO = new RestaurantDTO()
+                    .fromEntityToDto(restaurant);
+
+            restaurantDTOList.add(restaurantDTO);
+
+        }
+
+
+
+        return ResponseEntity.ok(restaurantDTOList);
     }
 
     @GetMapping(value = "{id}")
