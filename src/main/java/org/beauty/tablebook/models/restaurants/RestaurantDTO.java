@@ -25,13 +25,10 @@ public class RestaurantDTO {
 
     public Restaurants fromDTOtoEntity(){
 
-        Users user = new Users();
 
-        user.setUserID(this.getOwnerID());
 
         return new Restaurants.RestaurantsBuilder()
                 .address(this.getAddress())
-                .owner(user)
                 .city(this.getCity())
                 .name(this.getName())
                 .build();

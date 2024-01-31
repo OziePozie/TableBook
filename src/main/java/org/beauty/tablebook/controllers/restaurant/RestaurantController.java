@@ -5,10 +5,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
+import org.beauty.tablebook.controllers.restaurant.requests.PostTablesRequestDTO;
 import org.beauty.tablebook.models.restaurants.RestaurantDTO;
 import org.beauty.tablebook.models.restaurants.RestaurantService;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.restaurants.RestaurantsRepository;
+import org.beauty.tablebook.models.tables.TableDTO;
+import org.beauty.tablebook.models.tables_version.TableVersionRepository;
+import org.beauty.tablebook.models.tables_version.TablesVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -74,7 +78,7 @@ public class RestaurantController {
 
     }
 
-    @PostMapping
+    @PostMapping()
     @Operation(summary = "Добавить новый ресторан")
     public ResponseEntity<HttpStatus> postRestaurant(@RequestBody
                                                      RestaurantDTO restaurantDTO){
@@ -84,7 +88,7 @@ public class RestaurantController {
             restaurantService.saveRestaurant(restaurantDTO);
 
         } catch (UserWithIDNotFoundException e){
-            
+
             return ResponseEntity
                     .of(ProblemDetail.forStatus(HttpStatus.BAD_REQUEST))
                     .build();
@@ -94,4 +98,24 @@ public class RestaurantController {
 
     }
 
+    @PostMapping(value = "/{id}/tables")
+    @Operation(summary = "Создать схему ресторана",
+            description = "Загрузить новую схему для ресторана")
+    public ResponseEntity<HttpStatus>
+    postNewTablesSchemeToRestaurant(@RequestBody() PostTablesRequestDTO postTablesRequestDTO,
+                                    @PathVariable(name = "id") Long restaurantID){
+
+        TablesVersion tablesVersion = new TablesVersion();
+
+        tablesVersion.setName(postTablesRequestDTO.getVersionName());
+
+        restaurantService.saveTables(postTablesRequestDTO.getTableDTOList(),
+                restaurantID,
+                tablesVersion);
+
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
 }
+
+
