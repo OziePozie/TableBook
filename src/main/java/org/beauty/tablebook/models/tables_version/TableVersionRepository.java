@@ -13,5 +13,7 @@ public interface TableVersionRepository extends JpaRepository<TablesVersion, Lon
     List<TablesVersion> getTablesVersionByRestaurant_IdOrderByCreatedAtDesc(Long restaurantID);
 
 
+    TablesVersion findFirstByRestaurantIdAndIsUsingIsTrue(Long restaurantID);
+
 
 }

@@ -21,4 +21,6 @@ public class TablesVersion {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    private Boolean isUsing;
+
 }

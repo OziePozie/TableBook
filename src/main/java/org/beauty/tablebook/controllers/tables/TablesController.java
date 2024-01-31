@@ -50,7 +50,7 @@ public class TablesController {
         return ResponseEntity.ok(allTablesSchemeVersions);
     }
 
-    @GetMapping(value = "{versionID}")
+    @GetMapping(value = "{versionID}/tables")
     @Operation
     public ResponseEntity<List<TableDTO>> getTablesByVersionID(@PathVariable(name = "versionID") Long versionID,
                                                                @PathVariable String id){
@@ -65,7 +65,8 @@ public class TablesController {
     @PutMapping(value = "{tableID}")
     @Operation
     public ResponseEntity<HttpStatus> putUpdateToTableByRestaurantIDAndTableID(
-            @PathVariable(name = "id") Long restID, @PathVariable(name = "tableID") Long tableID,
+            @PathVariable(name = "id") Long restID,
+            @PathVariable(name = "tableID") Long tableID,
             TableDTO tableDTO){
 
         Tables table = Tables.fromDTO(tableDTO);

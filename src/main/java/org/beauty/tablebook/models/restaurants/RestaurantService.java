@@ -57,6 +57,14 @@ public class RestaurantService {
 
         List<Tables> tablesList = new ArrayList<>(tableDTOList.size());
         Restaurants restaurant;
+
+        TablesVersion oldTablesVersion = tableVersionRepository
+                .findFirstByRestaurantIdAndIsUsingIsTrue(restaurantID);
+        if (oldTablesVersion != null) {
+            oldTablesVersion.setIsUsing(false);
+
+            tableVersionRepository.save(oldTablesVersion);
+        }
         if (restaurantRepository.existsById(restaurantID)) {
 
             restaurant = restaurantRepository.findById(restaurantID).get();
@@ -64,6 +72,8 @@ public class RestaurantService {
             tablesVersion.setCreatedAt(Date.from(Instant.now()));
 
             tablesVersion.setRestaurant(restaurant);
+
+            tablesVersion.setIsUsing(true);
 
             tableVersionRepository.save(tablesVersion);
 
