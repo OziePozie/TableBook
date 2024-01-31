@@ -65,7 +65,12 @@ public class BookingService {
         return bookingRepository.findByUserUserID(userId);
     }
 
+    @Transactional(readOnly = true)
+    public List<Booking> getBookingsByRestaurant(Long restId) {
 
+        return bookingRepository.findByRestaurantId(restId);
+
+    }
     private boolean isTableAvailable(Tables table, Date time) {
 
         return true;

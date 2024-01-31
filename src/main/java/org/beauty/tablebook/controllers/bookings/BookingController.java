@@ -9,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
@@ -38,6 +42,31 @@ public class BookingController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create booking");
         }
+    }
+    @GetMapping("/restaurants/{restId}")
+    public ResponseEntity<List<BookingResponseByTable>> getBookingsByTable(@RequestParam(name = "tableId") Long tableId,
+                                                     @PathVariable Long restId){
+
+        try {
+            List<Booking> bookings = bookingService.getBookingsByRestaurant(restId);
+
+            List<BookingResponseByTable> listOfBookingOnTable = new ArrayList<>();
+            for (Booking booking: bookings){
+                if (Objects.equals(booking.getTable().getId(), tableId)){
+
+                    BookingResponseByTable bookingResponseByTable = new BookingResponseByTable(booking.getTime());
+
+                    listOfBookingOnTable.add(bookingResponseByTable);
+                }
+
+            }
+            System.out.println(listOfBookingOnTable);
+            return ResponseEntity.ok(listOfBookingOnTable);
+        }  catch (TableNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+
     }
 
 
