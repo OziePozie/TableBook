@@ -65,11 +65,9 @@ public class BookingService {
         return bookingRepository.findByUserUserID(userId);
     }
 
-    // Проверка доступности столика на указанное время
+
     private boolean isTableAvailable(Tables table, Date time) {
-        // Здесь можно добавить логику проверки доступности столика на указанное время
-        // Например, проверить, что на указанное время столик свободен или не забронирован
-        // Это зависит от вашего приложения и бизнес-логики
+
         return true;
     }
 }
