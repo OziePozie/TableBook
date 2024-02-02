@@ -1,6 +1,7 @@
 package org.beauty.tablebook.models.restaurants;
 
 import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
+import org.beauty.tablebook.models.media.RestaurantMediaService;
 import org.beauty.tablebook.models.tables.TableDTO;
 import org.beauty.tablebook.models.tables.TableRepository;
 import org.beauty.tablebook.models.tables.Tables;
@@ -8,6 +9,7 @@ import org.beauty.tablebook.models.tables_version.TableVersionRepository;
 import org.beauty.tablebook.models.tables_version.TablesVersion;
 import org.beauty.tablebook.models.users.Users;
 import org.beauty.tablebook.models.users.UsersRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -25,6 +27,8 @@ public class RestaurantService {
     private final TableRepository tableRepository;
 
     private final TableVersionRepository tableVersionRepository;
+    @Autowired
+    RestaurantMediaService restaurantMediaService;
 
     public RestaurantService(RestaurantsRepository restaurantRepository, UsersRepository userRepository, TableRepository tableRepository, TableVersionRepository tableVersionRepository) {
         this.restaurantRepository = restaurantRepository;
@@ -45,7 +49,10 @@ public class RestaurantService {
 
             restaurant.setOwner(owner);
 
-            restaurantRepository.save(restaurant);
+            restaurant = restaurantRepository.save(restaurant);
+
+            restaurantMediaService.saveMedia(restaurantDTO.getUrl(), restaurant);
+
         } else {
             throw new UserWithIDNotFoundException(restaurantDTO.getOwnerID());
         }

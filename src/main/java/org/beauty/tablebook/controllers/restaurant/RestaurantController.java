@@ -10,8 +10,6 @@ import org.beauty.tablebook.models.restaurants.RestaurantDTO;
 import org.beauty.tablebook.models.restaurants.RestaurantService;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.restaurants.RestaurantsRepository;
-import org.beauty.tablebook.models.tables.TableDTO;
-import org.beauty.tablebook.models.tables_version.TableVersionRepository;
 import org.beauty.tablebook.models.tables_version.TablesVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +17,13 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("api/v1/restaurants")
+@CrossOrigin(origins = "http://localhost:3000")
 @AllArgsConstructor
 @Tag(name = "Работа с ресторанами", description = "Управление ресторанами системы")
 public class RestaurantController {

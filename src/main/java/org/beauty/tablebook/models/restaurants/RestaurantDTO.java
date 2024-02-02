@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.beauty.tablebook.models.users.Users;
 
 @Data
 @Builder
@@ -15,6 +14,8 @@ import org.beauty.tablebook.models.users.Users;
 @AllArgsConstructor
 public class RestaurantDTO {
     @NotBlank
+    private Long ID;
+    @NotBlank
     private String name;
     @NotBlank
     private String city;
@@ -22,15 +23,16 @@ public class RestaurantDTO {
     private String address;
     @NotBlank
     private Long ownerID;
+    private String url;
 
     public Restaurants fromDTOtoEntity(){
 
-
-
         return new Restaurants.RestaurantsBuilder()
+                .id(this.ID)
                 .address(this.getAddress())
                 .city(this.getCity())
                 .name(this.getName())
+                .logo(this.getUrl())
                 .build();
 
     }
@@ -38,10 +40,12 @@ public class RestaurantDTO {
     public RestaurantDTO fromEntityToDto(Restaurants restaurant){
 
         return new RestaurantDTOBuilder()
+                .ID(restaurant.getId())
                 .address(restaurant.getAddress())
                 .ownerID(restaurant.getOwner().getUserID())
                 .name(restaurant.getName())
                 .city(restaurant.getCity())
+                .url(restaurant.getLogo())
                 .build();
 
     }

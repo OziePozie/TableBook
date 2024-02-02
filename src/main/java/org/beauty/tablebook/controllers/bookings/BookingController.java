@@ -1,5 +1,7 @@
 package org.beauty.tablebook.controllers.bookings;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.beauty.tablebook.models.booking.Booking;
 import org.beauty.tablebook.models.booking.BookingService;
 import org.beauty.tablebook.models.booking.exceptions.TableNotFoundException;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +46,8 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create booking");
         }
     }
-    @GetMapping("/restaurants/{restId}")
-    public ResponseEntity<List<BookingResponseByTable>> getBookingsByTable(@RequestParam(name = "tableId") Long tableId,
+    @GetMapping("/restaurants/{restId}/tables/{tableId}")
+    public ResponseEntity<List<BookingResponseByTable>> getBookingsByTable(@PathVariable(name = "tableId") Long tableId,
                                                      @PathVariable Long restId){
 
         try {
@@ -60,7 +63,6 @@ public class BookingController {
                 }
 
             }
-            System.out.println(listOfBookingOnTable);
             return ResponseEntity.ok(listOfBookingOnTable);
         }  catch (TableNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -69,6 +71,41 @@ public class BookingController {
 
     }
 
+@GetMapping("/restaurants/{restId}")
+    public ResponseEntity<List<BookingResponseByRestaurant>> getBookingsByRestaurant(@PathVariable Long restId){
+        try {
+            List<BookingResponseByRestaurant> bookingResponseByRestaurants = new ArrayList<>();
+            List<Booking> bookings = bookingService.getBookingsByRestaurant(restId)
+                    .stream()
+                    .filter(booking -> booking.getTime()
+                            .after(Date.from(Instant.now())))
+                    .toList();
+
+            for(Booking booking: bookings){
+                BookingResponseByRestaurant book = new BookingResponseByRestaurant();
+                book.setTableId(booking.getTable().getId());
+                book.setTime(booking.getTime());
+                bookingResponseByRestaurants.add(book);
+            }
+            return ResponseEntity.ok(bookingResponseByRestaurants);
+
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build();
+        }
+
+
+}
+
+
+}
+@Setter
+@Getter
+class BookingResponseByRestaurant{
+
+    Long tableId;
+
+    Date time;
 
 
 }

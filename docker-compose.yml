@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  stolikBack:
+    image: openjdk:17
+    container_name: stolikBack
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./stolik:/opt/docker
+    command: java -Dspring.config.location=/opt/docker/application.yml -XX:+HeapDumpOnOutOfMemoryError -jar /opt/docker/TableBook-0.0.1-SNAPSHOT.jar
+    working_dir: /opt/docker
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    networks:
+      stolik_net:
+        ipv4_address: 192.168.249.2
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    restart: always
+    user: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5432:5432 #exchange port
+    volumes:
+      - ${PWD}/postgresql/data:/var/lib/postgresql/data
+      - ${PWD}/postgresql/backup:/backup
+    networks:
+      stolik_net:
+        ipv4_address: 192.168.249.3
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=test@test.org
+      - PGADMIN_DEFAULT_PASSWORD=123
+    ports:
+      - 5050:80 #web-console
+    volumes:
+      - ${PWD}/pgadmin/pgadmin:/var/lib/pgadmin
+    networks:
+      stolik_net:
+        ipv4_address: 192.168.249.4
+
+
+networks:
+  stolik_net:
+    name: stolik_net
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+      com.docker.network.bridge.name: stolik_net
+    ipam:
+      config:
+        - subnet: 192.168.249.1/24
+

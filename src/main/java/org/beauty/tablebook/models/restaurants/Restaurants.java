@@ -24,6 +24,7 @@ public class Restaurants {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
     private Users owner;
+    private String logo;
 
 
 }
