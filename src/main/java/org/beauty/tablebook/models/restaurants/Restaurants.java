@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.beauty.tablebook.models.booking.Booking;
 import org.beauty.tablebook.models.users.Users;
 import org.hibernate.annotations.Type;
 
@@ -24,6 +25,7 @@ public class Restaurants {
     private String city;
     private String address;
     private String description;
+    private Boolean isActive;
     @Lob
     @JsonIgnore
     private String jsonScheme;

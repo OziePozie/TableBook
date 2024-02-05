@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Lob;
+import jakarta.servlet.annotation.ServletSecurity;
+import jakarta.servlet.annotation.WebFilter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.aspectj.lang.annotation.Before;
 import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
 import org.beauty.tablebook.controllers.restaurant.requests.PostTablesRequestDTO;
 import org.beauty.tablebook.models.media.reels.ReelDTOReq;
@@ -31,7 +34,7 @@ import java.util.List;
 @RequestMapping("api/v1/restaurants")
 @CrossOrigin(origins = "http://localhost:3000")
 @AllArgsConstructor
-@Tag(name = "Работа с ресторанами", description = "Управление ресторанами системы")
+@Tag(name = "Работа с ресторанами (Пользователь)", description = "Получение ресторанов системы")
 public class RestaurantController {
 
     @Autowired
@@ -52,7 +55,7 @@ public class RestaurantController {
 
         for (Restaurants restaurant: restaurants){
 
-            RestaurantDTO restaurantDTO = new RestaurantDTO()
+            RestaurantDTO restaurantDTO = RestaurantDTO
                     .fromEntityToDto(restaurant);
 
             restaurantDTOList.add(restaurantDTO);
@@ -73,8 +76,9 @@ public class RestaurantController {
         if (restaurantsRepository.existsById(ID)){
         Restaurants restaurant = restaurantsRepository.findById(ID).get();
 
-        return ResponseEntity.ok(new RestaurantDTO()
-                    .fromEntityToDto(restaurant));
+
+            return ResponseEntity.ok(RestaurantDTO
+                        .fromEntityToDto(restaurant));
         } else
             return ResponseEntity
                 .badRequest()
@@ -82,56 +86,9 @@ public class RestaurantController {
 
     }
 
-    @PostMapping()
-    @Operation(summary = "Добавить новый ресторан")
-    public ResponseEntity<HttpStatus> postRestaurant(@RequestBody
-                                                     RestaurantDTO restaurantDTO){
-
-        try {
-
-            restaurantService.saveRestaurant(restaurantDTO);
-
-        } catch (UserWithIDNotFoundException e){
-
-            return ResponseEntity
-                    .of(ProblemDetail.forStatus(HttpStatus.BAD_REQUEST))
-                    .build();
-        }
-
-        return ResponseEntity.ok(HttpStatus.CREATED);
-
-    }
-
-    @PostMapping(value = "/{id}/tables")
-    @Operation(summary = "Создать схему ресторана",
-            description = "Загрузить новую схему для ресторана")
-    public ResponseEntity<HttpStatus>
-    postNewTablesSchemeToRestaurant(@RequestBody() PostTablesRequestDTO postTablesRequestDTO,
-                                    @PathVariable(name = "id") Long restaurantID){
-
-        String json = postTablesRequestDTO.getFile();
-        List<Integer> tableIDsList = JSONParserToSaveTables.parse(json);
-
-        restaurantService.saveTables(tableIDsList, restaurantID);
-        restaurantService.saveScheme(json, restaurantID);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/{id}/media")
-    @Operation(summary = "Создать схему ресторана",
-            description = "Загрузить новую схему для ресторана")
-    public ResponseEntity<HttpStatus>
-    postNewReelsToRestaurant(@RequestBody() ReelDTOReq reelDTOReq,
-                             @PathVariable(name = "id") Long restaurantID){
-
-        Reels reels = reelDTOReq.toEntity();
 
 
-        restaurantService.saveReels(reels, restaurantID);
 
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
     @GetMapping(value = "/{id}/tables")
     @Operation(summary = "Получить схему ресторана",

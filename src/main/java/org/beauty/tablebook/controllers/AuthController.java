@@ -1,8 +1,10 @@
 package org.beauty.tablebook.controllers;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.beauty.tablebook.models.users.UserDTO;
 import org.beauty.tablebook.models.users.Users;
 import org.beauty.tablebook.models.users.UsersRepository;
@@ -12,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Optional;
 
@@ -45,20 +49,24 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserDTO user) {
-        String email = user.getEmail();
-        if (userRepository.findFirstByEmail(email).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is already taken");
-        } else {
-            userRepository.save(user.fromDTOtoEntity());
-            return ResponseEntity.ok("User registered successfully");
-        }
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<?> register(@RequestBody UserDTO user) {
+//        String email = user.getEmail();
+//        if (userRepository.findFirstByEmail(email).isPresent()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is already taken");
+//        } else {
+//            userRepository.save(user.fromDTOtoEntity());
+//            return ResponseEntity.ok("User registered successfully");
+//        }
+//    }
 
+    @SneakyThrows
     private String generateToken(String email) {
-        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-        return Jwts.builder().setSubject(email).signWith(key).compact();
+        //Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        return Jwts.builder()
+                .setSubject(email)
+                .signWith(SignatureAlgorithm.HS256,SECRET_KEY.getBytes(StandardCharsets.UTF_8))
+                .compact();
     }
 }
 @Data

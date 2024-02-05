@@ -14,7 +14,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Stolik System Api")
+                                .title("ReserveEasy System Api")
                                 .version("1.0.0")
                                 .contact(
                                         new Contact()

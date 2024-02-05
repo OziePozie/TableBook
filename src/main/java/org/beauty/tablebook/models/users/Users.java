@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.beauty.tablebook.models.restaurants.Restaurants;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 
 import java.sql.Timestamp;
@@ -31,7 +33,8 @@ public class Users {
     private String password;
     private LocalDate birthdayDate;
     private String phoneNumber;
-
+    @ColumnDefault(value = "false")
+    private Boolean isAdmin;
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "id")
 //    private List<Restaurants> restaurants = new ArrayList<>();

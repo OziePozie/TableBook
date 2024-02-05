@@ -1,5 +1,8 @@
 package org.beauty.tablebook.controllers.bookings;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.Setter;
 import org.beauty.tablebook.models.booking.Booking;
@@ -21,6 +24,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
+@Tag(name = "Работа с резервированиями", description = "Работа с резервацией столов")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -31,6 +35,11 @@ public class BookingController {
     }
 
     @PostMapping()
+    @ApiResponses({
+            @ApiResponse (responseCode = "200", description = "Успешное создание резерва"),
+            @ApiResponse (responseCode = "404", description = "Стол недоступен"),
+            @ApiResponse (responseCode = "400", description = "Стола с таким Id не существует")
+            })
     public ResponseEntity<HttpStatus> createBooking(@RequestBody BookingRequest request) {
         try {
             Booking booking = bookingService

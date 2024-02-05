@@ -42,7 +42,13 @@ public class RestaurantService {
     }
 
 
-    public void saveRestaurant(RestaurantDTO restaurantDTO) {
+    public void saveRestaurant(Restaurants restaurant){
+
+        restaurantRepository.save(restaurant);
+
+    }
+
+    public void saveRestaurantWithMedia(RestaurantDTO restaurantDTO) {
 
         Optional<Users> optionalUser = userRepository.findById(restaurantDTO.getOwnerID());
 

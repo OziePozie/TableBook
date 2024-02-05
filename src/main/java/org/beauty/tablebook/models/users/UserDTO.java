@@ -38,7 +38,7 @@ public class UserDTO {
     private String password;
 
 
-
+    private Boolean isAdmin;
     private LocalDate birthdayDate;
 
     @NotBlank
@@ -54,6 +54,7 @@ public class UserDTO {
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
+
                 .build();
 
     }
@@ -66,6 +67,7 @@ public class UserDTO {
                 .email(this.getEmail())
                 .password(this.getPassword())
                 .phoneNumber(this.getPhoneNumber())
+                .isAdmin(this.getIsAdmin())
                 .build();
         return users;
 

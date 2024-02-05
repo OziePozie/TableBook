@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/restaurants/{id}")
+@RequestMapping("api/v1/restaurants/{id}/tables")
 @Tag(name = "Работа со столами", description = "Столы")
 @AllArgsConstructor
 public class TablesController {
