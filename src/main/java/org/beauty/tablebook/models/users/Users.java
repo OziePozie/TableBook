@@ -9,10 +9,8 @@ import org.beauty.tablebook.models.restaurants.Restaurants;
 
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 @Data
@@ -30,8 +28,8 @@ public class Users {
     private String userFirstName;
     private String userLastName;
     private String email;
-    private String passwordHash;
-    private Timestamp birthdayDate;
+    private String password;
+    private LocalDate birthdayDate;
     private String phoneNumber;
 
 //    @OneToMany(cascade = CascadeType.ALL)

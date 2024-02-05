@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate.ddl-auto: update
-#spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
+#spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
 
 logging:
   level:

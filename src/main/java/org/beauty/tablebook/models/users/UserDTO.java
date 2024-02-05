@@ -14,7 +14,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,7 +39,7 @@ public class UserDTO {
 
 
 
-    private Timestamp birthdayDate;
+    private LocalDate birthdayDate;
 
     @NotBlank
     private String phoneNumber;
@@ -49,7 +52,7 @@ public class UserDTO {
                 .lastName(user.getUserLastName())
                 .birthdayDate(user.getBirthdayDate())
                 .email(user.getEmail())
-                .password(user.getPasswordHash())
+                .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .build();
 
@@ -61,7 +64,7 @@ public class UserDTO {
                 .userLastName(this.getLastName())
                 .birthdayDate(this.getBirthdayDate())
                 .email(this.getEmail())
-                .passwordHash(this.getPassword())
+                .password(this.getPassword())
                 .phoneNumber(this.getPhoneNumber())
                 .build();
         return users;

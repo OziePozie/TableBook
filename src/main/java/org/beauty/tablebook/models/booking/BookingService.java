@@ -34,16 +34,19 @@ public class BookingService {
 
 
     @Transactional
-    public Booking createBooking(Long restaurantId, Long tableId, Long userId, Date time) {
+    public Booking createBooking(Long restaurantId, Integer tableId, Long userId, Date time) {
 
-        Tables table = tableRepository.findById(tableId).orElseThrow(() ->
-                new TableNotFoundException(tableId));
-        if (!isTableAvailable(table, time)) {
-            throw new TableUnavailableException(tableId);
-        }
+        Tables table = tableRepository.getFirstByTableId(tableId);
+//        if (!isTableAvailable(table, time)) {
+//            throw new TableUnavailableException(tableId);
+//        }
 
-        Users user = usersRepository.findById(userId).get();
-        Restaurants restaurant = restaurantsRepository.findById(restaurantId).get();
+        Users user = usersRepository
+                .findById(userId)
+                .get();
+        Restaurants restaurant = restaurantsRepository
+                .findById(restaurantId)
+                .get();
 
         Booking booking = new Booking();
         booking.setRestaurant(restaurant);

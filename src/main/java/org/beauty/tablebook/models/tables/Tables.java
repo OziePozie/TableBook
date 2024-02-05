@@ -25,21 +25,21 @@ public class Tables {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurants restaurant;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "version_id", nullable = false)
-    private TablesVersion tablesVersion;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "version_id", nullable = false)
+//    private TablesVersion tablesVersion;
 
-    private String tableName;
-    private int capacity;
-    private int positionX;
-    private int positionY;
+    private Integer tableId;
+//    private int capacity;
+//    private int positionX;
+//    private int positionY;
     public static Tables fromDTO(TableDTO tableDTO) {
         Tables table = new Tables();
-//        table.setId(tableDTO.getId());
-        table.setTableName(tableDTO.getTableName());
-        table.setCapacity(tableDTO.getCapacity());
-        table.setPositionX(tableDTO.getPositionX());
-        table.setPositionY(tableDTO.getPositionY());
+        //        table.setId(tableDTO.getId());
+//        table.setTableName(tableDTO.getTableName());
+//        table.setCapacity(tableDTO.getCapacity());
+//        table.setPositionX(tableDTO.getPositionX());
+//        table.setPositionY(tableDTO.getPositionY());
         return table;
     }
 }

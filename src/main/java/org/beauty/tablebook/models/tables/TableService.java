@@ -56,17 +56,18 @@ public class TableService {
 
     public List<TableDTO> getAllTablesByVersionID(Long versionID) {
 
-        List<Tables> tablesList = tableRepository.getAllByTablesVersion_Id(versionID);
+//        List<Tables> tablesList = tableRepository.getAllByTablesVersion_Id(versionID);
 
-        List<TableDTO> tableDTOList = new ArrayList<>(tablesList.size());
-
-        for (Tables table:tablesList){
-
-            TableDTO tableDTO = TableDTO.fromEntity(table);
-
-            tableDTOList.add(tableDTO);
-
-        }
-        return tableDTOList;
+//        List<TableDTO> tableDTOList = new ArrayList<>(tablesList.size());
+//
+//        for (Tables table:tablesList){
+//
+//            TableDTO tableDTO = TableDTO.fromEntity(table);
+//
+//            tableDTOList.add(tableDTO);
+//
+//        }
+//        return tableDTOList;
+        return null;
     }
 }

@@ -1,15 +1,24 @@
 package org.beauty.tablebook.models.media;
 
+import org.beauty.tablebook.models.media.reels.Reels;
+import org.beauty.tablebook.models.media.reels.ReelsRepository;
 import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.restaurants.RestaurantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class RestaurantMediaService {
 
     @Autowired
     RestaurantMediaRepository restaurantMediaRepository;
+    @Autowired
+    ReelsRepository reelsRepository;
 
 
 
@@ -25,6 +34,8 @@ public class RestaurantMediaService {
             restaurantMedia.setRestaurant(restaurant);
 
         }
+
+
 
         String small = url
                 .replaceFirst("width=\\d{2,}&height=\\d{2,}",
@@ -42,6 +53,22 @@ public class RestaurantMediaService {
 
 
     }
+
+    public RestaurantMedia getMedia(Restaurants restaurant){
+
+        RestaurantMedia restaurantMedia =
+                restaurantMediaRepository
+                        .findRestaurantMediaByRestaurantId(restaurant.getId());
+
+
+        List<Reels> reelsList = reelsRepository.findAllByCreatedAtAfterAndRestaurantId(Date
+                .from(Instant.now()
+                        .minus(1, ChronoUnit.DAYS)), 1L);
+        restaurantMedia.setReelsList(reelsList);
+
+        return restaurantMedia;
+    }
+
 
 
 }

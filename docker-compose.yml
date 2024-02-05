@@ -27,8 +27,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
-    ports:
-      - 5432:5432 #exchange port
+#    ports:
+#      - 5432:5432 #exchange port
     volumes:
       - ${PWD}/postgresql/data:/var/lib/postgresql/data
       - ${PWD}/postgresql/backup:/backup

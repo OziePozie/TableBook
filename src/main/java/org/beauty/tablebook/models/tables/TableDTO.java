@@ -22,10 +22,10 @@ public class TableDTO {
         return TableDTO.builder()
 //                .id(table.getId())
 //                .restaurantId(table.getRestaurant().getId())
-                .tableName(table.getTableName())
-                .capacity(table.getCapacity())
-                .positionX(table.getPositionX())
-                .positionY(table.getPositionY())
+//                .tableName(table.getTableName())
+//                .capacity(table.getCapacity())
+//                .positionX(table.getPositionX())
+//                .positionY(table.getPositionY())
                 .build();
 
     }

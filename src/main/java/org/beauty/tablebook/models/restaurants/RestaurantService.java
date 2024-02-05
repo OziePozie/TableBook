@@ -2,6 +2,8 @@ package org.beauty.tablebook.models.restaurants;
 
 import org.beauty.tablebook.controllers.restaurant.exceptions.UserWithIDNotFoundException;
 import org.beauty.tablebook.models.media.RestaurantMediaService;
+import org.beauty.tablebook.models.media.reels.Reels;
+import org.beauty.tablebook.models.media.reels.ReelsRepository;
 import org.beauty.tablebook.models.tables.TableDTO;
 import org.beauty.tablebook.models.tables.TableRepository;
 import org.beauty.tablebook.models.tables.Tables;
@@ -27,14 +29,16 @@ public class RestaurantService {
     private final TableRepository tableRepository;
 
     private final TableVersionRepository tableVersionRepository;
+    private final ReelsRepository reelsRepository;
     @Autowired
     RestaurantMediaService restaurantMediaService;
 
-    public RestaurantService(RestaurantsRepository restaurantRepository, UsersRepository userRepository, TableRepository tableRepository, TableVersionRepository tableVersionRepository) {
+    public RestaurantService(RestaurantsRepository restaurantRepository, UsersRepository userRepository, TableRepository tableRepository, TableVersionRepository tableVersionRepository, ReelsRepository reelsRepository) {
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.tableRepository = tableRepository;
         this.tableVersionRepository = tableVersionRepository;
+        this.reelsRepository = reelsRepository;
     }
 
 
@@ -94,7 +98,7 @@ public class RestaurantService {
 
             table.setRestaurant(restaurant);
 
-            table.setTablesVersion(tablesVersion);
+
 
             tablesList.add(table);
 
@@ -104,4 +108,48 @@ public class RestaurantService {
         tableRepository.saveAll(tablesList);
 
     }
+
+
+
+    public void saveTables(List<Integer> list, Long restID){
+
+        Restaurants rest = restaurantRepository.findById(restID).get();
+
+        tableRepository.deleteAllByRestaurantId(restID);
+
+        for (Integer tableId:list){
+
+            Tables table = new Tables();
+            table.setRestaurant(rest);
+            table.setTableId(tableId);
+
+            tableRepository.save(table);
+        }
+
+    }
+    public void saveReels(Reels reels, Long restID){
+        Restaurants rest = restaurantRepository.findById(restID).get();
+        reels.setRestaurant(rest);
+        reelsRepository.save(reels);
+
+
+
+    }
+
+    public void saveScheme(String json, Long restID){
+        Restaurants restaurants = restaurantRepository.findById(restID).get();
+        restaurants.setJsonScheme(json);
+        restaurantRepository.save(restaurants);
+
+
+    }
+
+    public Restaurants getRestaurantByID(Long restID) {
+
+        Restaurants restaurants = restaurantRepository.findById(restID).get();
+
+        return restaurants;
+
+    }
+
 }

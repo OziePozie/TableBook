@@ -7,7 +7,6 @@ import org.beauty.tablebook.models.tables_version.TablesVersion;
 import java.util.List;
 @Getter
 public class PostTablesRequestDTO{
-    String versionName;
-    List<TableDTO> tableDTOList;
+    String file;
 
 }

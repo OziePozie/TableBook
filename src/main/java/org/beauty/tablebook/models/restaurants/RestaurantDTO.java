@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.beauty.tablebook.models.media.RestaurantMedia;
 
 @Data
 @Builder
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestaurantDTO {
-    @NotBlank
+
     private Long ID;
     @NotBlank
     private String name;
@@ -23,6 +24,9 @@ public class RestaurantDTO {
     private String address;
     @NotBlank
     private Long ownerID;
+    @NotBlank
+    private String description;
+//    private RestaurantMedia media;
     private String url;
 
     public Restaurants fromDTOtoEntity(){
@@ -33,6 +37,7 @@ public class RestaurantDTO {
                 .city(this.getCity())
                 .name(this.getName())
                 .logo(this.getUrl())
+                .description(this.description)
                 .build();
 
     }
@@ -46,6 +51,7 @@ public class RestaurantDTO {
                 .name(restaurant.getName())
                 .city(restaurant.getCity())
                 .url(restaurant.getLogo())
+                .description(restaurant.getDescription())
                 .build();
 
     }

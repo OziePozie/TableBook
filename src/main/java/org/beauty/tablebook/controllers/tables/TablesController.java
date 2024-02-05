@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/restaurants/{id}/tables_version/")
+@RequestMapping("api/v1/restaurants/{id}")
 @Tag(name = "Работа со столами", description = "Столы")
 @AllArgsConstructor
 public class TablesController {
@@ -41,28 +41,28 @@ public class TablesController {
 //
 //    }
 
-    @GetMapping
-    @Operation
-    public ResponseEntity<List<TablesVersion>> getTablesVersionByRestaurantID(@PathVariable(name = "id") Long restID){
+//    @GetMapping
+//    @Operation
+//    public ResponseEntity<List<TablesVersion>> getTablesVersionByRestaurantID(@PathVariable(name = "id") Long restID){
+//
+//        List<TablesVersion> allTablesSchemeVersions = tablesVersionsService.getAllVersionByRestID(restID);
+//
+//        return ResponseEntity.ok(allTablesSchemeVersions);
+//    }
 
-        List<TablesVersion> allTablesSchemeVersions = tablesVersionsService.getAllVersionByRestID(restID);
+//    @GetMapping(value = "/tables")
+//    @Operation
+//    public ResponseEntity<List<TableDTO>> getTablesByVersionID(@PathVariable(name = "versionID") Long versionID,
+//                                                               @PathVariable String id){
+//
+//        List<TableDTO> tablesDTOs = tableService.getAllTablesByVersionID(versionID);
+//
+//        return ResponseEntity.ok(tablesDTOs);
+//
+//
+//    }
 
-        return ResponseEntity.ok(allTablesSchemeVersions);
-    }
-
-    @GetMapping(value = "{versionID}/tables")
-    @Operation
-    public ResponseEntity<List<TableDTO>> getTablesByVersionID(@PathVariable(name = "versionID") Long versionID,
-                                                               @PathVariable String id){
-
-        List<TableDTO> tablesDTOs = tableService.getAllTablesByVersionID(versionID);
-
-        return ResponseEntity.ok(tablesDTOs);
-
-
-    }
-
-    @PutMapping(value = "{tableID}")
+    @PutMapping(value = "/{tableID}")
     @Operation
     public ResponseEntity<HttpStatus> putUpdateToTableByRestaurantIDAndTableID(
             @PathVariable(name = "id") Long restID,
