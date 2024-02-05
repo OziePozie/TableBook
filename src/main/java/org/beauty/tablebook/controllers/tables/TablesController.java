@@ -21,6 +21,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/restaurants/{id}/tables")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
+
 @Tag(name = "Работа со столами", description = "Столы")
 @AllArgsConstructor
 public class TablesController {

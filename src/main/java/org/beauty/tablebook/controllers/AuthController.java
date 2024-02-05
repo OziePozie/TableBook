@@ -21,7 +21,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
+
 public class AuthController {
 
     @Autowired

@@ -17,7 +17,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/owner/restaurants/")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
+
 @AllArgsConstructor
 @Tag(name = "Работа с ресторанами (Владелец)", description = "Управление ресторанами системы")
 public class RestaurantAdminController {

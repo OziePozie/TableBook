@@ -24,6 +24,12 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/bookings")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
+
 @Tag(name = "Работа с резервированиями", description = "Работа с резервацией столов")
 public class BookingController {
 

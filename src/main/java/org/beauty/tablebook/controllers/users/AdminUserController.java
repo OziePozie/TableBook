@@ -13,6 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/admin/users")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
+
 @Tag(name = "Работа с пользователями (Админка)", description = "Полное управление пользователями системы")
 @AllArgsConstructor
 public class AdminUserController {

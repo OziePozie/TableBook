@@ -32,7 +32,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/restaurants")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:3000",
+        "http://45.151.144.194:80"}
+)
 @AllArgsConstructor
 @Tag(name = "Работа с ресторанами (Пользователь)", description = "Получение ресторанов системы")
 public class RestaurantController {
