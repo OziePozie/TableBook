@@ -6,6 +6,7 @@ import org.beauty.tablebook.models.restaurants.Restaurants;
 import org.beauty.tablebook.models.tables.Tables;
 import org.beauty.tablebook.models.users.Users;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,7 +30,7 @@ public class Booking {
     private Users user;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date time;
+    private LocalDateTime time;
 
 
 }

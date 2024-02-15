@@ -40,6 +40,7 @@ public class AuthController {
         String password = authRequest.getPassword();
 
         Optional<Users> user = userRepository.findFirstByEmail(email);
+
         if (user.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("User email doesn't exist");
@@ -47,9 +48,12 @@ public class AuthController {
             Users users = user.get();
             if (users.getPassword().equals(password)) {
                 String token = generateToken(email);
-                return ResponseEntity.ok(new AuthResponse(token));
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Authorization", token)
+                        .body(new AuthResponse(token));
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Invalid credentials");
             }
         }
     }

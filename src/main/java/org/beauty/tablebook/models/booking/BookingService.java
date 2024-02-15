@@ -11,8 +11,12 @@ import org.beauty.tablebook.models.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class BookingService {
@@ -34,7 +38,7 @@ public class BookingService {
 
 
     @Transactional
-    public Booking createBooking(Long restaurantId, Integer tableId, Long userId, Date time) {
+    public Booking createBooking(Long restaurantId, Integer tableId, Long userId, LocalDateTime time) {
 
         Tables table = tableRepository.getFirstByTableId(tableId);
 //        if (!isTableAvailable(table, time)) {
@@ -74,6 +78,19 @@ public class BookingService {
         return bookingRepository.findByRestaurantId(restId);
 
     }
+
+    @Transactional(readOnly = true)
+    public List<Booking> getBookingsByRestaurantAndTime(Long restId, LocalDateTime dateTime) {
+
+        LocalDateTime startTime = dateTime.minus(2, TimeUnit.HOURS.toChronoUnit());
+        LocalDateTime endTime = dateTime.plus(2, TimeUnit.HOURS.toChronoUnit());
+
+
+        return bookingRepository.findAllByRestIdAndTime(startTime, endTime, restId);
+
+    }
+
+
     private boolean isTableAvailable(Tables table, Date time) {
 
         return true;

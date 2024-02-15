@@ -1,5 +1,6 @@
 package org.beauty.tablebook.controllers.bookings;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,9 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.tags.Param;
 
 import java.awt.print.Book;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,14 +99,16 @@ public class BookingController {
     }
 
     @GetMapping("/restaurants/{restId}")
-    public ResponseEntity<List<BookingResponseByRestaurant>> getBookingsByRestaurant(@PathVariable Long restId){
+    public ResponseEntity<List<BookingResponseByRestaurant>> getBookingsByRestaurantAndDateTime(@PathVariable Long restId,
+                                                                                     @RequestParam LocalDateTime datetime){
         try {
             List<BookingResponseByRestaurant> bookingResponseByRestaurants = new ArrayList<>();
-            List<Booking> bookings = bookingService.getBookingsByRestaurant(restId)
-                    .stream()
-                    .filter(booking -> booking.getTime()
-                            .after(Date.from(Instant.now())))
-                    .toList();
+//            List<Booking> bookings = bookingService.getBookingsByRestaurant(restId)
+//                    .stream()
+//                    .filter(booking -> booking.getTime()
+//                            .after(Date.from(Instant.now())))
+//                    .toList();
+            List<Booking> bookings = bookingService.getBookingsByRestaurantAndTime(restId, datetime);
 
             for(Booking booking: bookings) {
 
@@ -130,7 +135,6 @@ class BookingResponseByRestaurant{
 
     Integer tableId;
 
-    Date time;
-
-
+    LocalDateTime time;
+    
 }

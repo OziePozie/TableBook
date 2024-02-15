@@ -25,13 +25,13 @@ public class FilterBeanConfig {
         reg.addUrlPatterns("/api/v1/owner/restaurants/*");
         return reg;
     }
-    @Bean
-    public FilterRegistrationBean requestAdminFilter() {
-        AdminFilter adminFilter = new AdminFilter(userService,
-                exceptionController);
-        final FilterRegistrationBean reg = new FilterRegistrationBean(adminFilter);
-        reg.addUrlPatterns("/api/v1/admin/*");
-        return reg;
-    }
+//    @Bean
+//    public FilterRegistrationBean requestAdminFilter() {
+////        AdminFilter adminFilter = new AdminFilter(userService,
+////                exceptionController);
+////        final FilterRegistrationBean reg = new FilterRegistrationBean(adminFilter);
+////        reg.addUrlPatterns("/api/v1/admin/*");
+////        return reg;
+//    }
 
 }

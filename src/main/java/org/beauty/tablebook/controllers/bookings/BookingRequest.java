@@ -10,5 +10,5 @@ public class BookingRequest {
     private Long restaurantId;
     private Integer tableId;
     private Long userId;
-    private Date time;
+    private LocalDateTime time;
 }

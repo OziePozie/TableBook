@@ -33,12 +33,17 @@ public class AdminController {
 
     @PostMapping()
     @Operation(summary = "Добавить новый ресторан")
-    public ResponseEntity<HttpStatus> postRestaurant(@RequestBody
+    public ResponseEntity<Restaurants> postRestaurant(@RequestBody
                                                      RestaurantDTO restaurantDTO){
 
         try {
 
-            restaurantService.saveRestaurantWithMedia(restaurantDTO);
+            Restaurants restaurants = restaurantService.saveRestaurantWithMedia(restaurantDTO);
+
+
+            return ResponseEntity
+                    .status(HttpStatusCode.valueOf(201))
+                    .body(restaurants);
 
         } catch (Exception e) {
             ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
@@ -48,7 +53,7 @@ public class AdminController {
                     .build();
         }
 
-        return ResponseEntity.ok(HttpStatus.CREATED);
+
 
     }
     @DeleteMapping

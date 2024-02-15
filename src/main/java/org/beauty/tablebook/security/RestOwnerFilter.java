@@ -30,7 +30,9 @@ public class RestOwnerFilter extends OncePerRequestFilter {
     UserService userService;
     ExceptionController exceptionController;
     @Override
-    public void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest req,
+                                 HttpServletResponse res,
+                                 FilterChain filterChain)throws IOException, ServletException {
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
         final String authHeader = request.getHeader("Authorization");
@@ -52,7 +54,6 @@ public class RestOwnerFilter extends OncePerRequestFilter {
 
 
             String restID = request.getRequestURI().split("/")[5];
-            System.out.println(restID);
             String email = (String) claims.get("sub");
             Restaurants restaurants = restaurantService.getRestaurantByID(Long.valueOf(restID));
             Users user = userService.findByEmail(email);
@@ -61,6 +62,9 @@ public class RestOwnerFilter extends OncePerRequestFilter {
                 if (Objects.equals(restaurants.getOwner().getUserID(), user.getUserID())){
 
                     request.setAttribute("claims", claims);
+
+                    req.setAttribute("userId", email);
+
                     filterChain.doFilter(req, res);
 
                 } else throw new ServletException("Not a owner this Restaurant");

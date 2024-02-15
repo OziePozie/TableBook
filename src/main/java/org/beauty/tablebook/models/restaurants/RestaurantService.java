@@ -48,7 +48,7 @@ public class RestaurantService {
 
     }
 
-    public void saveRestaurantWithMedia(RestaurantDTO restaurantDTO) {
+    public Restaurants saveRestaurantWithMedia(RestaurantDTO restaurantDTO) {
 
         Optional<Users> optionalUser = userRepository.findById(restaurantDTO.getOwnerID());
 
@@ -63,9 +63,12 @@ public class RestaurantService {
 
             restaurantMediaService.saveMedia(restaurantDTO.getUrl(), restaurant);
 
+            return restaurant;
+
         } else {
             throw new UserWithIDNotFoundException(restaurantDTO.getOwnerID());
         }
+
     }
 
     public void saveTables(List<TableDTO> tableDTOList,

@@ -47,7 +47,7 @@ public class UserService {
 
     }
 
-    public Users findByEmail(String email){
+    public Users    findByEmail(String email){
         Optional<Users> optionalUsers = usersRepository.findFirstByEmail(email);
 
         return optionalUsers.orElse(null);

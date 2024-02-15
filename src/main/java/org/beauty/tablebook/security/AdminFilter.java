@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class AdminFilter extends OncePerRequestFilter {
         final HttpServletResponse response = (HttpServletResponse) res;
         final String authHeader = request.getHeader("Authorization");
 
-        System.out.println(request.getRequestURI());
+
 
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
@@ -46,14 +47,17 @@ public class AdminFilter extends OncePerRequestFilter {
                     .getBody();
             String email = (String) claims.get("sub");
 
+
+
             Users user = userService.findByEmail(email);
             try {
                 if (user.getIsAdmin()) {
-                    request.setAttribute("claims", claims);
+
+
                     filterChain.doFilter(req, res);
 
                 } else {
-                    System.out.println("Not a admin");
+
 
                     throw new ServletException("Not a admin role");
                 }
@@ -61,12 +65,12 @@ public class AdminFilter extends OncePerRequestFilter {
                 ErrorDTO errorDTO = exceptionController
                         .handleServletException(request,
                                 e);
-                res.setStatus(errorDTO .getStatus());
+                res.setStatus(errorDTO.getStatus());
                 res.setContentType("application/json");
 
                 ObjectMapper mapper = new ObjectMapper();
                 PrintWriter out = res.getWriter();
-                out.print(mapper.writeValueAsString(errorDTO ));
+                out.print(mapper.writeValueAsString(errorDTO.getError()));
                 out.flush();
 
             }
